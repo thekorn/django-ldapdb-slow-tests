@@ -1,0 +1,20 @@
+web:
+  build: .
+  working_dir: /code/mysite
+  command: python manage.py runserver 0.0.0.0:8000
+  volumes:
+    - .:/code
+  ports:
+    - "8000:8000"
+  links:
+    - openldap:openldap
+  environment:
+    - PYTHONPATH=.
+    - LDAP_HOST=openldap
+    - LDAP_USER=cn=admin,dc=example,dc=org
+    - LDAP_PWD=admin
+openldap:
+  image: osixia/openldap
+  volumes:
+    - /var/tmp/sapi2/openldap/ldap:/var/lib/ldap
+    - /var/tmp/sapi2/openldap/slapd.d:/etc/ldap/slapd.d
